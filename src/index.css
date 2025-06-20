@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,7 +19,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 220 98% 35%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -32,24 +36,17 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 220 98% 35%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -99,5 +96,113 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* RTL Support */
+  [dir="rtl"] {
+    font-family: 'Noto Sans Arabic', sans-serif;
+  }
+
+  [dir="ltr"] {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* RTL utility classes */
+  .rtl {
+    direction: rtl;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+
+  /* Custom scrollbar for RTL */
+  [dir="rtl"] ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  [dir="rtl"] ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  [dir="rtl"] ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  [dir="rtl"] ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Enhanced button styles */
+  .btn-water {
+    @apply bg-gradient-to-r from-water-500 to-water-600 hover:from-water-600 hover:to-water-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-tunisian {
+    @apply bg-gradient-to-r from-tunisian-600 to-tunisian-700 hover:from-tunisian-700 hover:to-tunisian-800 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  /* Card enhancements */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* Glass effect for modern UI */
+  .glass {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20;
+  }
+
+  /* Arabic number styles */
+  .arabic-numerals {
+    font-variant-numeric: normal;
+  }
+
+  [dir="rtl"] .arabic-numerals {
+    font-feature-settings: "lnum" 1;
+  }
+}
+
+/* Animation enhancements */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px;
   }
 }
