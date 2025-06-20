@@ -1,32 +1,12 @@
 
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { Layout } from '@/components/Layout';
 import { Dashboard } from '@/components/Dashboard';
 import { SubscriberManagement } from '@/components/SubscriberManagement';
-import { AuthPage } from '@/components/AuthPage';
 
 const Index = () => {
-  const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-sky-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-sky-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">🚰</span>
-          </div>
-          <p className="text-blue-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <AuthPage />;
-  }
 
   const renderPage = () => {
     switch (currentPage) {

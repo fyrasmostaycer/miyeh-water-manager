@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LanguageToggle } from './LanguageToggle';
 import { useTranslation } from '@/lib/i18n';
@@ -12,7 +11,7 @@ import {
   Settings, 
   Calendar,
   List,
-  LogOut
+  Plus
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -22,7 +21,6 @@ interface LayoutProps {
 }
 
 export function Layout({ children, currentPage = 'dashboard', onPageChange }: LayoutProps) {
-  const { user, signOut } = useAuth();
   const { language, isRTL } = useLanguage();
   const { t } = useTranslation(language);
 
@@ -34,10 +32,6 @@ export function Layout({ children, currentPage = 'dashboard', onPageChange }: La
     { id: 'reports', label: t('reports'), icon: FileText },
     { id: 'settings', label: t('settings'), icon: Settings },
   ];
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-blue-50 to-sky-50 ${isRTL ? 'rtl' : 'ltr'}`}>
@@ -55,23 +49,8 @@ export function Layout({ children, currentPage = 'dashboard', onPageChange }: La
             </div>
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
               <LanguageToggle />
-              <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 text-sm font-medium">
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                </div>
-                <span className="text-sm text-blue-600 hidden sm:block">
-                  {user?.email}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-blue-600 text-sm font-medium">A</span>
               </div>
             </div>
           </div>

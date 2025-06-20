@@ -2,8 +2,6 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/lib/i18n';
-import { useSubscribers } from '@/hooks/useSubscribers';
-import { useProfile } from '@/hooks/useProfile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,40 +17,34 @@ import {
 export function Dashboard() {
   const { language, isRTL } = useLanguage();
   const { t } = useTranslation(language);
-  const { subscribers, loading: subscribersLoading } = useSubscribers();
-  const { profile, loading: profileLoading } = useProfile();
-
-  const activeSubscribers = subscribers.filter(s => s.status === 'active').length;
-  const suspendedSubscribers = subscribers.filter(s => s.status === 'suspended').length;
-  const totalSubscribers = subscribers.length;
 
   const stats = [
     {
       title: t('totalSubscribers'),
-      value: totalSubscribers.toString(),
-      change: `+${Math.floor(totalSubscribers * 0.05)}`,
+      value: '247',
+      change: '+12',
       changeType: 'positive' as const,
       icon: Users,
     },
     {
-      title: language === 'ar' ? 'المشتركون النشطون' : 'Abonnés Actifs',
-      value: activeSubscribers.toString(),
-      change: `${Math.round((activeSubscribers / totalSubscribers) * 100) || 0}%`,
+      title: t('monthlyRevenue'),
+      value: '15,420 DT',
+      change: '+8.2%',
       changeType: 'positive' as const,
       icon: TrendingUp,
     },
     {
-      title: language === 'ar' ? 'معدل التحصيل' : 'Taux de Collecte',
-      value: `${Math.round(87.5)}%`,
+      title: t('collectionRate'),
+      value: '87.5%',
       change: '-2.1%',
       changeType: 'negative' as const,
       icon: Calendar,
     },
     {
-      title: language === 'ar' ? 'المشتركون المعلقون' : 'Abonnés Suspendus',
-      value: suspendedSubscribers.toString(),
-      change: suspendedSubscribers > 0 ? `+${suspendedSubscribers}` : '0',
-      changeType: suspendedSubscribers > 0 ? 'negative' as const : 'positive' as const,
+      title: t('outstandingBills'),
+      value: '23',
+      change: '+5',
+      changeType: 'negative' as const,
       icon: AlertCircle,
     },
   ];
@@ -78,26 +70,13 @@ export function Dashboard() {
     },
   ];
 
-  if (subscribersLoading || profileLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-sky-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">🚰</span>
-          </div>
-          <p className="text-blue-600">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-blue-900 mb-2">
-            {t('welcome')} {profile?.full_name || 'User'}
+            {t('welcome')}
           </h1>
           <p className="text-blue-600">
             {language === 'ar' 
