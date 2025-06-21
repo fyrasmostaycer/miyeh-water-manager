@@ -13,19 +13,25 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-sky-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-sky-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">🚰</span>
+      <LanguageProvider>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-sky-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-sky-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <span className="text-white font-bold text-lg">🚰</span>
+            </div>
+            <p className="text-blue-600">Loading...</p>
           </div>
-          <p className="text-blue-600">Loading...</p>
         </div>
-      </div>
+      </LanguageProvider>
     );
   }
 
   if (!user) {
-    return <AuthPage />;
+    return (
+      <LanguageProvider>
+        <AuthPage />
+      </LanguageProvider>
+    );
   }
 
   const renderPage = () => {
