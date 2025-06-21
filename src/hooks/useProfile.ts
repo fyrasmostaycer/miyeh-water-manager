@@ -41,7 +41,12 @@ export function useProfile() {
           variant: "destructive"
         });
       } else {
-        setProfile(data);
+        // Cast the data to match our UserProfile interface
+        const profileData: UserProfile = {
+          ...data,
+          permissions: (data.permissions as Record<string, any>) || {}
+        };
+        setProfile(profileData);
         
         // If user doesn't have an organization, assign them to the default one
         if (!data.organization_id) {
