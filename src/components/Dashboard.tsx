@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/lib/i18n';
 import { useSubscribers } from '@/hooks/useSubscribers';
@@ -8,6 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { AddSubscriberDialog } from '@/components/AddSubscriberDialog';
+import { MeterReadingDialog } from '@/components/MeterReadingDialog';
+import { GenerateReportDialog } from '@/components/GenerateReportDialog';
 import { 
   Users, 
   FileText, 
@@ -27,36 +29,26 @@ export function Dashboard({ onPageChange }: DashboardProps) {
   const { subscribers, loading: subscribersLoading } = useSubscribers();
   const { profile, loading: profileLoading } = useProfile();
   const { toast } = useToast();
+  
+  // Dialog states
+  const [addSubscriberOpen, setAddSubscriberOpen] = useState(false);
+  const [meterReadingOpen, setMeterReadingOpen] = useState(false);
+  const [generateReportOpen, setGenerateReportOpen] = useState(false);
 
   const activeSubscribers = subscribers.filter(s => s.status === 'active').length;
   const suspendedSubscribers = subscribers.filter(s => s.status === 'suspended').length;
   const totalSubscribers = subscribers.length;
 
   const handleAddSubscriber = () => {
-    if (onPageChange) {
-      onPageChange('subscribers');
-      toast({
-        title: language === 'ar' ? 'الانتقال إلى إدارة المشتركين' : 'Navigation vers Gestion des Abonnés',
-        description: language === 'ar' ? 'يمكنك إضافة مشترك جديد من هناك' : 'Vous pouvez ajouter un nouvel abonné depuis cette page',
-      });
-    }
+    setAddSubscriberOpen(true);
   };
 
   const handleMeterReading = () => {
-    toast({
-      title: language === 'ar' ? 'قراءة العدادات' : 'Lecture des Compteurs',
-      description: language === 'ar' ? 'ستتم إضافة هذه الميزة قريباً' : 'Cette fonctionnalité sera bientôt disponible',
-    });
+    setMeterReadingOpen(true);
   };
 
   const handleGenerateReports = () => {
-    if (onPageChange) {
-      onPageChange('reports');
-      toast({
-        title: language === 'ar' ? 'الانتقال إلى التقارير' : 'Navigation vers Rapports',
-        description: language === 'ar' ? 'يمكنك إنشاء التقارير من هناك' : 'Vous pouvez générer des rapports depuis cette page',
-      });
-    }
+    setGenerateReportOpen(true);
   };
 
   const stats = [
@@ -263,6 +255,20 @@ export function Dashboard({ onPageChange }: DashboardProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Dialog Components */}
+      <AddSubscriberDialog 
+        open={addSubscriberOpen} 
+        onOpenChange={setAddSubscriberOpen} 
+      />
+      <MeterReadingDialog 
+        open={meterReadingOpen} 
+        onOpenChange={setMeterReadingOpen} 
+      />
+      <GenerateReportDialog 
+        open={generateReportOpen} 
+        onOpenChange={setGenerateReportOpen} 
+      />
     </div>
   );
 }

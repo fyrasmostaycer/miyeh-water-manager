@@ -1,19 +1,22 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSubscribers, Subscriber } from '@/hooks/useSubscribers';
 
-export function AddSubscriberDialog() {
+interface AddSubscriberDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function AddSubscriberDialog({ open, onOpenChange }: AddSubscriberDialogProps) {
   const { language, isRTL } = useLanguage();
   const { addSubscriber, loading } = useSubscribers();
-  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     name_ar: '',
@@ -35,7 +38,7 @@ export function AddSubscriberDialog() {
     });
     
     if (result) {
-      setOpen(false);
+      onOpenChange(false);
       setFormData({
         name: '',
         name_ar: '',
@@ -52,13 +55,7 @@ export function AddSubscriberDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-          {language === 'ar' ? 'إضافة مشترك' : 'Ajouter Abonné'}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
@@ -145,7 +142,7 @@ export function AddSubscriberDialog() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="active">
-                  {language === 'ar' ? 'نشط' : 'Actif'}
+                  {language === 'ar' ? 'نشط'  : 'Actif'}
                 </SelectItem>
                 <SelectItem value="inactive">
                   {language === 'ar' ? 'غير نشط' : 'Inactif'}
@@ -183,7 +180,7 @@ export function AddSubscriberDialog() {
           </div>
 
           <div className="flex justify-end space-x-2 rtl:space-x-reverse">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               {language === 'ar' ? 'إلغاء' : 'Annuler'}
             </Button>
             <Button type="submit" disabled={loading}>
