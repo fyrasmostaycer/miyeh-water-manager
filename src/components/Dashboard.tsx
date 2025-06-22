@@ -7,6 +7,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Users, 
   FileText, 
@@ -16,15 +17,47 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-export function Dashboard() {
+interface DashboardProps {
+  onPageChange?: (page: string) => void;
+}
+
+export function Dashboard({ onPageChange }: DashboardProps) {
   const { language, isRTL } = useLanguage();
   const { t } = useTranslation(language);
   const { subscribers, loading: subscribersLoading } = useSubscribers();
   const { profile, loading: profileLoading } = useProfile();
+  const { toast } = useToast();
 
   const activeSubscribers = subscribers.filter(s => s.status === 'active').length;
   const suspendedSubscribers = subscribers.filter(s => s.status === 'suspended').length;
   const totalSubscribers = subscribers.length;
+
+  const handleAddSubscriber = () => {
+    if (onPageChange) {
+      onPageChange('subscribers');
+      toast({
+        title: language === 'ar' ? 'الانتقال إلى إدارة المشتركين' : 'Navigation vers Gestion des Abonnés',
+        description: language === 'ar' ? 'يمكنك إضافة مشترك جديد من هناك' : 'Vous pouvez ajouter un nouvel abonné depuis cette page',
+      });
+    }
+  };
+
+  const handleMeterReading = () => {
+    toast({
+      title: language === 'ar' ? 'قراءة العدادات' : 'Lecture des Compteurs',
+      description: language === 'ar' ? 'ستتم إضافة هذه الميزة قريباً' : 'Cette fonctionnalité sera bientôt disponible',
+    });
+  };
+
+  const handleGenerateReports = () => {
+    if (onPageChange) {
+      onPageChange('reports');
+      toast({
+        title: language === 'ar' ? 'الانتقال إلى التقارير' : 'Navigation vers Rapports',
+        description: language === 'ar' ? 'يمكنك إنشاء التقارير من هناك' : 'Vous pouvez générer des rapports depuis cette page',
+      });
+    }
+  };
 
   const stats = [
     {
@@ -106,7 +139,7 @@ export function Dashboard() {
             }
           </p>
         </div>
-        <Button className="mt-4 sm:mt-0">
+        <Button className="mt-4 sm:mt-0" onClick={handleAddSubscriber}>
           <Plus className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
           {t('addSubscriber')}
         </Button>
@@ -183,7 +216,11 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-3">
-              <Button variant="outline" className="justify-start h-auto p-4">
+              <Button 
+                variant="outline" 
+                className="justify-start h-auto p-4 hover:bg-blue-50 transition-colors"
+                onClick={handleAddSubscriber}
+              >
                 <Users className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <div className="text-left rtl:text-right">
                   <div className="font-medium">{t('addSubscriber')}</div>
@@ -192,7 +229,11 @@ export function Dashboard() {
                   </div>
                 </div>
               </Button>
-              <Button variant="outline" className="justify-start h-auto p-4">
+              <Button 
+                variant="outline" 
+                className="justify-start h-auto p-4 hover:bg-blue-50 transition-colors"
+                onClick={handleMeterReading}
+              >
                 <FileText className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <div className="text-left rtl:text-right">
                   <div className="font-medium">
@@ -203,7 +244,11 @@ export function Dashboard() {
                   </div>
                 </div>
               </Button>
-              <Button variant="outline" className="justify-start h-auto p-4">
+              <Button 
+                variant="outline" 
+                className="justify-start h-auto p-4 hover:bg-blue-50 transition-colors"
+                onClick={handleGenerateReports}
+              >
                 <Calendar className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <div className="text-left rtl:text-right">
                   <div className="font-medium">

@@ -37,7 +37,7 @@ const Index = () => {
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard onPageChange={setCurrentPage} />;
       case 'subscribers':
         return <SubscriberManagement />;
       case 'billing':
@@ -73,7 +73,7 @@ const Index = () => {
           </div>
         );
       default:
-        return <Dashboard />;
+        return <Dashboard onPageChange={setCurrentPage} />;
     }
   };
 
